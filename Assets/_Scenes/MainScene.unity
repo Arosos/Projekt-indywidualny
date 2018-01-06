@@ -153,13 +153,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e7a3562ee4340c4088fa8b9b2ed2e45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 30
-  height: 30
-  ground: {fileID: 0}
+  width: 100
+  height: 100
+  nodeSize: 4
   seed: arek
   useRandomSeed: 0
-  randomFillPercentage: 53
-  smoothNumber: 4
+  biomes:
+  - threshold: 0.811
+    tilePrefab: {fileID: 1347091868578362, guid: 7598c75e3a48c5c46aa95c87145a186e,
+      type: 2}
+  - threshold: 0.705
+    tilePrefab: {fileID: 1347091868578362, guid: 420b8e2c5ba2ca442978acd2c021b727,
+      type: 2}
+  - threshold: 0.554
+    tilePrefab: {fileID: 1347091868578362, guid: c5c0d899742bf154c8ac1c15a758485e,
+      type: 2}
+  - threshold: 0.372
+    tilePrefab: {fileID: 1347091868578362, guid: ca2b44b97805f5a4d9c5104c3f19b6ba,
+      type: 2}
+  - threshold: 0.205
+    tilePrefab: {fileID: 1347091868578362, guid: 453e66ba70436a44ea59608786274fbc,
+      type: 2}
+  - threshold: 0
+    tilePrefab: {fileID: 1347091868578362, guid: bb45e7210cdfd0e43a13508f905ba467,
+      type: 2}
+  randomFillPercentage: 30
+  smoothNumber: 1
 --- !u!1 &1738206306
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +220,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.11764706, g: 0.1102941, b: 0.099999994, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -212,7 +231,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 60
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -234,8 +253,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1738206306}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 38.859165, y: 56.89869, z: -284.06058}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
