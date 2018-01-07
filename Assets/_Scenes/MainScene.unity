@@ -157,7 +157,7 @@ MonoBehaviour:
   height: 100
   nodeSize: 4
   seed: arek
-  useRandomSeed: 0
+  useRandomSeed: 1
   biomes:
   - threshold: 0.811
     tilePrefab: {fileID: 1347091868578362, guid: 7598c75e3a48c5c46aa95c87145a186e,
@@ -177,8 +177,11 @@ MonoBehaviour:
   - threshold: 0
     tilePrefab: {fileID: 1347091868578362, guid: bb45e7210cdfd0e43a13508f905ba467,
       type: 2}
-  randomFillPercentage: 30
-  smoothNumber: 1
+  randomFillPercentage: 50
+  smoothNumber: 4
+  scale: 10
+  offset: {x: 0, y: 0}
+  autoUpdate: 0
 --- !u!1 &1738206306
 GameObject:
   m_ObjectHideFlags: 0

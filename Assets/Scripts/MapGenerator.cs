@@ -14,10 +14,14 @@ public class MapGenerator : MonoBehaviour
     public int randomFillPercentage = 30;
     public int smoothNumber = 4;
 
+    public float scale = 1f;
+    public Vector2 offset;
+
     int[,] map;
     int[,] biomeMap;
     GameObject[] tiles;
     int seedHashCode;
+    System.Random prng;
 
     // Use this for initialization
     void Start ()
@@ -32,7 +36,7 @@ public class MapGenerator : MonoBehaviour
             Generate();
 	}
 
-    void Generate()
+    public void Generate()
     {
         map = new int[width, height];
         biomeMap = new int[width, height];
@@ -50,7 +54,8 @@ public class MapGenerator : MonoBehaviour
         if (useRandomSeed)
             seed = Time.time.ToString();
 
-        System.Random prng = new System.Random(seed.GetHashCode());
+        seedHashCode = seed.GetHashCode();
+        prng = new System.Random(seedHashCode);
 
         for (int x = 0; x < width; x++)
         {
@@ -102,13 +107,18 @@ public class MapGenerator : MonoBehaviour
 
     void PerlinNoiseMap()
     {
+        Vector2 randomOffset = new Vector2(prng.Next(-100000, 100000) + offset.x, prng.Next(-100000, 100000) + offset.y);
+        float halfWidth = width / 2f;
+        float halfHeight = height / 2f;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (map[x, y] == 1)
                 {
-                    float noiseValue = Mathf.PerlinNoise((float)x / (width - 1), (float)y / (height - 1));
+                    float sampleX = (x - halfWidth) / scale + randomOffset.x;
+                    float sampleY = (y - halfHeight) / scale + randomOffset.y;
+                    float noiseValue = Mathf.PerlinNoise(sampleX, sampleY);
                     for (int i = 0; i < biomes.Length; i++)
                     {
                         if (biomes[i].threshold < noiseValue)
