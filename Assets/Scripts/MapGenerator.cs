@@ -36,6 +36,11 @@ public class MapGenerator : MonoBehaviour
             Generate();
 	}
 
+    void OnValidate()
+    {
+        Debug.Log("Test");//Generate();
+    }
+
     public void Generate()
     {
         map = new int[width, height];
