@@ -17,11 +17,14 @@ public class MapGenerator : MonoBehaviour
     public float scale = 1f;
     public Vector2 offset;
 
+    public GameObject playerPrefab;
+
     int[,] map;
     int[,] biomeMap;
     GameObject[] tiles;
     int seedHashCode;
     System.Random prng;
+    GameObject player;
 
     // Use this for initialization
     void Start ()
@@ -36,12 +39,38 @@ public class MapGenerator : MonoBehaviour
             Generate();
 	}
 
-    void OnValidate()
+    void SpawnPlayer()
     {
-        Debug.Log("Test");//Generate();
+        int x = prng.Next(0, width - 1);
+        int y = prng.Next(0, height - 1);
+        int counter = 0;
+        while (counter < 100)
+        {
+            if (map[x, y] == 0)
+            {
+                player = Instantiate(playerPrefab, new Vector3(x * nodeSize, y * nodeSize, 1f), new Quaternion());
+                break;
+            }
+            else
+            {
+                x = prng.Next(0, width - 1);
+                y = prng.Next(0, height - 1);
+            }
+            counter++;
+        }
     }
 
-    public void Generate()
+    void Generate()
+    {
+        Clear();
+        RandomMap();
+        for (int i = 0; i < smoothNumber; i++)
+            SmoothMap();
+        PerlinNoiseMap();
+        SpawnPlayer();
+    }
+
+    void Clear()
     {
         map = new int[width, height];
         biomeMap = new int[width, height];
@@ -49,11 +78,9 @@ public class MapGenerator : MonoBehaviour
             foreach (GameObject t in tiles)
                 Destroy(t);
         tiles = new GameObject[width * height];
-        RandomMap();
-        for (int i = 0; i < smoothNumber; i++)
-            SmoothMap();
-        PerlinNoiseMap();
+        Destroy(player);
     }
+
     void RandomMap()
     {
         if (useRandomSeed)
