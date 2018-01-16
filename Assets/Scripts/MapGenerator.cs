@@ -9,6 +9,7 @@ public class MapGenerator : MonoBehaviour
     public string seed;
     public bool useRandomSeed = true;
     public Biome[] biomes;
+    public GameObject outerWallPrefab;
 
     [Range(0, 100)]
     public int randomFillPercentage = 30;
@@ -22,6 +23,7 @@ public class MapGenerator : MonoBehaviour
     int[,] map;
     int[,] biomeMap;
     GameObject[] tiles;
+    GameObject[] borderTiles;
     int seedHashCode;
     System.Random prng;
     GameObject player;
@@ -67,7 +69,22 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < smoothNumber; i++)
             SmoothMap();
         PerlinNoiseMap();
+        GenerateBorderWall();
         SpawnPlayer();
+    }
+
+    void GenerateBorderWall()
+    {
+        for (int i = -1; i <= width; i++)
+        {
+            borderTiles[i + 1] = Instantiate(outerWallPrefab, new Vector3(i * nodeSize, -nodeSize, 1f), new Quaternion(), transform);
+            borderTiles[i + width + 3] = Instantiate(outerWallPrefab, new Vector3(i * nodeSize, height * nodeSize, 1f), new Quaternion(), transform);
+        }
+        for (int i = 0; i < height; i++)
+        {
+            borderTiles[i + 2 * width + 4] = Instantiate(outerWallPrefab, new Vector3(-nodeSize, i * nodeSize, 1f), new Quaternion(), transform);
+            borderTiles[i + 2 * width + height + 4] = Instantiate(outerWallPrefab, new Vector3(width * nodeSize, i * nodeSize, 1f), new Quaternion(), transform);
+        }
     }
 
     void Clear()
@@ -78,6 +95,10 @@ public class MapGenerator : MonoBehaviour
             foreach (GameObject t in tiles)
                 Destroy(t);
         tiles = new GameObject[width * height];
+        if (borderTiles != null)
+            foreach (GameObject t in borderTiles)
+                Destroy(t);
+        borderTiles = new GameObject[2 * (width + height) + 4];
         Destroy(player);
     }
 

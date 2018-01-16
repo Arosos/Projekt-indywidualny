@@ -177,6 +177,8 @@ MonoBehaviour:
   - threshold: 0
     tilePrefab: {fileID: 1347091868578362, guid: bb45e7210cdfd0e43a13508f905ba467,
       type: 2}
+  outerWallPrefab: {fileID: 1347091868578362, guid: 8440e2ceeb6fa4743b468e114c94e708,
+    type: 2}
   randomFillPercentage: 50
   smoothNumber: 4
   scale: 10
