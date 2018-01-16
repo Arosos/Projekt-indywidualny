@@ -106,7 +106,7 @@ public class MapGenerator : MonoBehaviour
     void RandomMap()
     {
         if (useRandomSeed)
-            seed = Time.time.ToString();
+            seed = System.DateTime.Now.ToString();
 
         seedHashCode = seed.GetHashCode();
         prng = new System.Random(seedHashCode);
