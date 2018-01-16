@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     public Vector2 offset;
 
     public GameObject playerPrefab;
+    GameObject player;
 
     int[,] map;
     int[,] biomeMap;
@@ -26,7 +27,6 @@ public class MapGenerator : MonoBehaviour
     GameObject[] borderTiles;
     int seedHashCode;
     System.Random prng;
-    GameObject player;
 
     // Use this for initialization
     void Start ()
@@ -51,6 +51,7 @@ public class MapGenerator : MonoBehaviour
             if (map[x, y] == 0)
             {
                 player = Instantiate(playerPrefab, new Vector3(x * nodeSize, y * nodeSize, 1f), new Quaternion());
+                Camera.main.GetComponent<CameraController>().player = player;
                 break;
             }
             else
