@@ -177,13 +177,15 @@ MonoBehaviour:
   - threshold: 0
     tilePrefab: {fileID: 1347091868578362, guid: bb45e7210cdfd0e43a13508f905ba467,
       type: 2}
-  outerWallPrefab: {fileID: 1347091868578362, guid: 8440e2ceeb6fa4743b468e114c94e708,
-    type: 2}
   randomFillPercentage: 50
   smoothNumber: 4
   scale: 10
   offset: {x: 0, y: 0}
   playerPrefab: {fileID: 1363384173465312, guid: 3bd372ed49769b545ac6463b6871718f,
+    type: 2}
+  outerWallPrefab: {fileID: 1347091868578362, guid: 8440e2ceeb6fa4743b468e114c94e708,
+    type: 2}
+  teleportPrefab: {fileID: 1307956942013362, guid: 75ae9c58bfb2cae4a9b00a2b3e4b528a,
     type: 2}
 --- !u!1 &1738206306
 GameObject:

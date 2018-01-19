@@ -9,7 +9,6 @@ public class MapGenerator : MonoBehaviour
     public string seed;
     public bool useRandomSeed = true;
     public Biome[] biomes;
-    public GameObject outerWallPrefab;
 
     [Range(0, 100)]
     public int randomFillPercentage = 30;
@@ -19,17 +18,20 @@ public class MapGenerator : MonoBehaviour
     public Vector2 offset;
 
     public GameObject playerPrefab;
+    public GameObject outerWallPrefab;
+    public GameObject teleportPrefab;
     GameObject player;
 
     int[,] map;
     int[,] biomeMap;
     GameObject[] tiles;
     GameObject[] borderTiles;
+    GameObject teleport;
     int seedHashCode;
     System.Random prng;
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
         Generate();
     }
@@ -39,7 +41,40 @@ public class MapGenerator : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
             Generate();
-	}
+    }
+
+    void Generate()
+    {
+        Clear();
+        RandomMap();
+        for (int i = 0; i < smoothNumber; i++)
+            SmoothMap();
+        PerlinNoiseMap();
+        GenerateBorderWall();
+        GenerateTeleport();
+        SpawnPlayer();
+    }
+
+    void GenerateTeleport()
+    {
+        int i = prng.Next(0, 4);
+        switch (i)
+        {
+            case 0:
+                teleport = Instantiate(teleportPrefab, new Vector3(0.5f * nodeSize, nodeSize, 1f), new Quaternion());
+                break;
+            case 1:
+                teleport = Instantiate(teleportPrefab, new Vector3((width - 1.5f) * nodeSize, nodeSize, 1f), new Quaternion());
+                break;
+            case 2:
+                teleport = Instantiate(teleportPrefab, new Vector3(0.5f * nodeSize, (height - 2f) * nodeSize, 1f), new Quaternion());
+                break;
+            case 3:
+                teleport = Instantiate(teleportPrefab, new Vector3((width - 1.5f) * nodeSize, (height - 2f) * nodeSize, 1f), new Quaternion());
+                break;
+        }
+        teleport.GetComponent<Teleport>().map = this;
+    }
 
     void SpawnPlayer()
     {
@@ -63,17 +98,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    void Generate()
-    {
-        Clear();
-        RandomMap();
-        for (int i = 0; i < smoothNumber; i++)
-            SmoothMap();
-        PerlinNoiseMap();
-        GenerateBorderWall();
-        SpawnPlayer();
-    }
-
     void GenerateBorderWall()
     {
         for (int i = -1; i <= width; i++)
@@ -86,6 +110,11 @@ public class MapGenerator : MonoBehaviour
             borderTiles[i + 2 * width + 4] = Instantiate(outerWallPrefab, new Vector3(-nodeSize, i * nodeSize, 1f), new Quaternion(), transform);
             borderTiles[i + 2 * width + height + 4] = Instantiate(outerWallPrefab, new Vector3(width * nodeSize, i * nodeSize, 1f), new Quaternion(), transform);
         }
+    }
+
+    public void GenerateNextLevel()
+    {
+        Generate();
     }
 
     void Clear()
@@ -101,12 +130,13 @@ public class MapGenerator : MonoBehaviour
                 Destroy(t);
         borderTiles = new GameObject[2 * (width + height) + 4];
         Destroy(player);
+        Destroy(teleport);
     }
 
     void RandomMap()
     {
         if (useRandomSeed)
-            seed = System.DateTime.Now.ToString();
+            seed = Time.time.ToString();//System.DateTime.Now.ToString();
 
         seedHashCode = seed.GetHashCode();
         prng = new System.Random(seedHashCode);
@@ -178,7 +208,7 @@ public class MapGenerator : MonoBehaviour
                         if (biomes[i].threshold < noiseValue)
                         {
                             biomeMap[x, y] = i;
-                            tiles[x * width + y] = Instantiate(biomes[i].tilePrefab, new Vector3(x * nodeSize, y * nodeSize, 1f), new Quaternion(), transform);
+                            tiles[x * height + y] = Instantiate(biomes[i].tilePrefab, new Vector3(x * nodeSize, y * nodeSize, 1f), new Quaternion(), transform);
                             break;
                         }
                     }
