@@ -156,7 +156,7 @@ MonoBehaviour:
   width: 100
   height: 100
   nodeSize: 4
-  seed: 0
+  seed: arek
   useRandomSeed: 1
   biomes:
   - threshold: 0.811

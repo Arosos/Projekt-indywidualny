@@ -29,17 +29,15 @@ public class MapGenerator : MonoBehaviour
     GameObject teleport;
     int seedHashCode;
     System.Random prng;
-
-    // Use this for initialization
+    
     void Awake ()
     {
         Generate();
     }
 	
-	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
             Generate();
     }
 
@@ -53,6 +51,13 @@ public class MapGenerator : MonoBehaviour
         GenerateBorderWall();
         GenerateTeleport();
         SpawnPlayer();
+    }
+
+    public void DestroyTile(int x, int y)
+    {
+        map[x, y] = 0;
+        Destroy(tiles[x * height + y]);
+        tiles[x * height + y] = null;
     }
 
     void GenerateTeleport()
@@ -86,6 +91,7 @@ public class MapGenerator : MonoBehaviour
             if (map[x, y] == 0)
             {
                 player = Instantiate(playerPrefab, new Vector3(x * nodeSize, y * nodeSize, 1f), new Quaternion());
+                player.GetComponent<PlayerController>().map = this;
                 Camera.main.GetComponent<CameraController>().player = player;
                 break;
             }
@@ -114,6 +120,7 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateNextLevel()
     {
+        seed += "a";
         Generate();
     }
 
