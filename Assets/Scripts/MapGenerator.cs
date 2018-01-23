@@ -209,7 +209,7 @@ public class MapGenerator : MonoBehaviour
                 {
                     float sampleX = (x - halfWidth) / scale + randomOffset.x;
                     float sampleY = (y - halfHeight) / scale + randomOffset.y;
-                    float noiseValue = Mathf.PerlinNoise(sampleX, sampleY);
+                    float noiseValue = Mathf.Clamp01(Mathf.PerlinNoise(sampleX, sampleY)) + 0.001f;
                     for (int i = 0; i < biomes.Length; i++)
                     {
                         if (biomes[i].threshold < noiseValue)
